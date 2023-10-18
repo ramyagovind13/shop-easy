@@ -17,7 +17,6 @@ Student can access the pantry platform for convinent and user friendly purchases
 - **Admin authentication**: Admin login worflow with username and password.
 - **Inventory Management**: Manage inventory to add, update and delete items based on the category.
 - **Order Tracking**: Tracking student orders, their status and history.
-- **User Management**: Administrative previliges to add, update and delete students.
 - **View Reviews and Suggestions**: Admin user Should be able to see the suggestion/review messages from student users.
 
 
