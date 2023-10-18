@@ -18,30 +18,32 @@ Student can access the pantry platform for convinent and user friendly purchases
 - **Inventory Management**: Manage inventory to add, update and delete items based on the category.
 - **Order Tracking**: Tracking student orders, their status and history.
 - **User Management**: Administrative previliges to add, update and delete students.
+- **View Reviews and Suggestions**: Admin user Should be able to see the suggestion/review messages from student users.
+
 
 ### Student features:
 
-- **Student authentication**: Student register and login worflow with username and password.
+- **Student authentication**: Student login worflow with username and password. Since the student is a specific college student where the pantry is operating, We consider all the students of this college are registered to the pantry by default and has Shop Easy Access.
 - **View Inventory**: Get the list of available items in the inventory.
-- **Reserve Items**: Students can reserve items in advance they wish to purchase
 - **Favorites List**: Students can mark items as favourite for quick purchases.
 - **Order Placement**: Place orders for the selected items and receive confirmation about the order.
+- **Order History**: Users should be able to view their purchase history.
 - **Order Cancellation**: Cancel order of the purchased items.
 - **Notifications**: Receive notifications about order status and announcements.
 - **Reviews and Suggestions**: Students can provide reviews and suggestions about the pantry.
+- **Favorites List**: Students should be able to mark favorites, View the marked favorites and remove favorites.
 
 ### Minimum Viable Product features(Core features):
 
 #### Admin features:
 
 - **Admin authentication**
-- **Inventory Management**
-- **Order Tracking**
+- **Inventory Management**: Add, Update and Delete Inventory
 
 #### Student features:
 
 - **Student authentication**
 - **View Inventory**
-- **Reserve Items**
 - **Order Placement**
+- **View Order History**
 - **Order Cancellation**
