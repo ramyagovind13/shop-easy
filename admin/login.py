@@ -47,12 +47,6 @@ def login():
 def admin():
     return 'Welcome to the admin panel'
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return 'You have been logged out'
-
 if __name__ == '__main__':
     app.run(debug=True, port=5433)    
 
