@@ -19,9 +19,15 @@ def home():
 
 @app.route('/Userlogin', methods=['GET'])
 def Userlogin(request):
-    args
+    args = MultiDict(request.args) # Use MultiDict to replace url_decode
+    # your login logic using 'args' here
+    return render_template('login.html')
+    a=request.getusername
+    b=request.getpassword()
 
-
+    record.password =b 
+    return login 
+    
 
 if __name__ == "__main__":
     app.run(debug=True , port= 5433)    
