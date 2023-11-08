@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mt-4">
+      <img
+        src="../static/img/psu-shop-easy-logo.png"
+        alt="A Beautiful Landscape"
+        class="img-fluid"
+      />
+    </div>
+    <div
+      class="col-md-6 d-flex align-items-center justify-content-center"
+      style="min-height: 100vh"
+    >
+      <div>
+        <div class="text-center mb-4">
+          <h5 class="custom-font">Free groceries for all PSU Students !!</h5>
+        </div>
+        <div class="text-center mb-4">
+          <a href="/login">
+            <button type="button" class="btn btn-dark all-btn-size">
+              Login
+            </button></a
+          >
+        </div>
+        <div class="text-center mb-4">
+          <button type="button" class="btn btn-dark all-btn-size">
+            Volunteer
+          </button>
+        </div>
+        <div class="text-center mb-4">
+          <button type="button" class="btn btn-dark all-btn-size">
+            Donate
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {% endblock %}
+  </div>
+</div>
