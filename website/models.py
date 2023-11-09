@@ -20,7 +20,9 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f"<User {self.email}>"
-
+     
+    def get_id(self):
+        return str(self.user_id)
 class OrderInventoryRelation(db.Model):
     __tablename__ = 'order_inventory_relation'
 
@@ -42,8 +44,8 @@ class Inventory(db.Model):
     weight = db.Column(db.Integer)
     expiry_date = db.Column(db.DateTime(timezone=True))
 
-    orders = db.relationship('Order', secondary=OrderInventoryRelation, back_populates='inventory')
-    favorites = db.relationship('Favorite', secondary=InventoryFavoriteRelation, back_populates='inventory')
+    orders = db.relationship('Order', secondary='order_inventory_relation', back_populates='inventory')
+    favorites = db.relationship('Favorite', secondary='inventory_favorite_relation', back_populates='inventory')
 
     def __repr__(self):
         return f"<Product {self.name}>"
@@ -56,14 +58,14 @@ class Order(db.Model):
     order_status = db.Column(db.String(50))
 
     user = db.relationship('User', back_populates='orders')
-    inventory = db.relationship('Inventory', secondary=OrderInventoryRelation, back_populates='orders')
+    inventory = db.relationship('Inventory', secondary='order_inventory_relation', back_populates='orders')
     
 class Favorite(db.Model):
     favorite_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
 
     user = db.relationship('User', back_populates='favorites')
-    inventory = db.relationship('Inventory', secondary=InventoryFavoriteRelation, back_populates='favorites')
+    inventory = db.relationship('Inventory', secondary='inventory_favorite_relation', back_populates='favorites')
 
 class Review(db.Model):
     review_id = db.Column(db.Integer, primary_key=True)
