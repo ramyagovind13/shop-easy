@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block title %}Inventory Products{% endblock %} {%
+block content %}
+<h1>Product List</h1>
+
+<ul class="list-group vh-100">
+  {% for product in products %}
+  <li class="list-group-item">
+    <strong>{{ product.name }}</strong>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
