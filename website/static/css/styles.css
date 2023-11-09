@@ -1,0 +1,16 @@
+.background-gradient {
+  background: linear-gradient(45deg, #cd4545, #f16821, #f3a333, #fffe9a);
+}
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
+.custom-font {
+  font-size: 3rem;
+}
+
+.all-btn-size {
+  width: 150px;
+  height: 50px;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+}
