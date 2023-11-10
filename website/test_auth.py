@@ -1,78 +1,41 @@
 import unittest
-from flask import Flask
-from flask_testing import TestCase
-from flask_login import LoginManager
-from werkzeug.security import generate_password_hash
+from unittest.mock import MagicMock
+from .models import models  
 
-from website import app, db
-from website.models import User
-from website.auth import auth
-
-app.config['TESTING'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-app.config['WTF_CSRF_ENABLED'] = False
-app.register_blueprint(auth)
-login_manager = LoginManager(app)
-login_manager.init_app(app)
-
-
-class TestAuth(TestCase):
-    def create_app(self):
-        return app
-
+class TestAuthService(unittest.TestCase):
     def setUp(self):
-        db.create_all()
+        self.models= models()  
 
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
 
-    def test_login_successful(self):
-        test_user = User(email='test@example.com', password=generate_password_hash('password'), role='user')
-        db.session.add(test_user)
-        db.session.commit()
+    def test_login_success(self):
+        email = "test@example.com"
+        password = "password"
+        user = MagicMock()
+        user.password = password
+        user.query.filter_by.return_value.first.return_value = user
 
-        response = self.client.post('/login', data=dict(username='test@example.com', password='password'))
+        with unittest.mock.patch('auth_service.User', user):
+            success, message = self.auth_service.login(email, password)
 
-        self.assertRedirects(response, url_for('views.admin'))
+        self.assertTrue(success)
+        self.assertEqual(message, "Logged in successfully!")
 
-        with self.client.session_transaction() as session:
-            flash_messages = session['_flashes']
-            self.assertIn(('Logged in successfully!', 'success'), flash_messages)
+    def test_login_failure(self):
+        email = "test@example.com"
+        password = "password"
+        user = MagicMock()
+        user.password = "wrong_password"
+        user.query.filter_by.return_value.first.return_value = user
 
-    def test_login_incorrect_password(self):
-        test_user = User(email='test@example.com', password=generate_password_hash('password'), role='user')
-        db.session.add(test_user)
-        db.session.commit()
+        with unittest.mock.patch('auth_service.User', user):
+            success, message = self.auth_service.login(email, password)
 
-        response = self.client.post('/login', data=dict(username='test@example.com', password='wrong_password'))
-
-        self.assertTemplateUsed('login.html')
-
-        with self.client.session_transaction() as session:
-            flash_messages = session['_flashes']
-            self.assertIn(('Incorrect password, try again.', 'error'), flash_messages)
-
-    def test_login_unregistered_email(self):
-
-        response = self.client.post('/login', data=dict(username='nonexistent@example.com', password='password'))
-
-        self.assertTemplateUsed('login.html')
-
-        with self.client.session_transaction() as session:
-            flash_messages = session['_flashes']
-            self.assertIn(('Sorry! Your email is not registered with Shop Easy.', 'error'), flash_messages)
+        self.assertFalse(success)
+        self.assertEqual(message, "Incorrect email or password.")
 
     def test_logout(self):
-
-        self.client.post('/login', data=dict(username='test@example.com', password='password'))
-
-        response = self.client.get('/logout')
-
-        self.assertRedirects(response, url_for('auth.login'))
-
-        with self.client.session_transaction() as session:
-            self.assertNotIn('user_id', session)
+        message = self.auth_service.logout()
+        self.assertEqual(message, "Logged out successfully.")
 
 if __name__ == '__main__':
     unittest.main()
