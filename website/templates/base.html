@@ -38,9 +38,14 @@
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="navbar-nav ms-auto">
             <!-- Use 'ms-auto' for right alignment -->
+            {% if current_user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" id="home" href="/">Home</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" id="logout" href="/logout">Logout</a>
+            </li>
+            {% else %}
             <li class="nav-item">
               <a class="nav-link" id="login" href="/login">Login</a>
             </li>
@@ -50,9 +55,7 @@
             <li class="nav-item">
               <a class="nav-link" id="login" href="/">Donate</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" id="logout" href="/logout">Logout</a>
-            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -61,20 +64,27 @@
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
     'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
       {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
     </div>
     {% else %}
-    <div class="alert alert-success alter-dismissable fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
       {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
+
     <div class="background-gradient">
       <div class="container">{% block content %} {% endblock %}</div>
     </div>
