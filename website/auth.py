@@ -17,9 +17,6 @@ class AuthService:
         logout_user()
         return "Logged out successfully."
 
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from auth_service import AuthService
-from flask_login import login_required, current_user
 
 auth = Blueprint('auth', __name__)
 auth_service = AuthService()
