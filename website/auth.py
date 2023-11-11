@@ -1,5 +1,6 @@
 from models import User
-from flask_login import login_user, logout_user
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask_login import login_required, current_user, login_user, logout_user
 
 class AuthService:
     @staticmethod
@@ -18,8 +19,7 @@ class AuthService:
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from auth_service import AuthService
-from . models import User
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import login_required, current_user
 
 auth = Blueprint('auth', __name__)
 auth_service = AuthService()
