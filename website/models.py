@@ -1,11 +1,6 @@
-'''
-Models for shop-easy app
-Refer docs/shop-easy-models-ER-diagram to understand 
-dependencies and relationships
-'''
 from sqlalchemy.sql import func
-from . import db
 from flask_login import UserMixin
+from .db import db
 
 class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
@@ -23,6 +18,7 @@ class User(db.Model, UserMixin):
      
     def get_id(self):
         return str(self.user_id)
+
 class OrderInventoryRelation(db.Model):
     __tablename__ = 'order_inventory_relation'
 
@@ -42,7 +38,7 @@ class Inventory(db.Model):
     quantity = db.Column(db.Integer)
     category = db.Column(db.String(100))
     weight = db.Column(db.Integer)
-    expiry_date = db.Column(db.DateTime(timezone=True))
+    expiry_date = db.Column(db.DateTime)
 
     orders = db.relationship('Order', secondary='order_inventory_relation', back_populates='inventory')
     favorites = db.relationship('Favorite', secondary='inventory_favorite_relation', back_populates='inventory')
@@ -54,7 +50,7 @@ class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     units_sold = db.Column(db.Integer)
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    date = db.Column(db.DateTime, default=func.now())
     order_status = db.Column(db.String(50))
 
     user = db.relationship('User', back_populates='orders')
