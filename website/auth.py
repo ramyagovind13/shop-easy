@@ -1,28 +1,31 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from . models import User
-from flask_login import login_user, login_required, logout_user, current_user
+import logging
+from flask import flash
+from flask import Blueprint, request, render_template, redirect, url_for
+from flask_login import login_required, logout_user, current_user
+from student.auth import can_student_login
+from website.models import User
 
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        print(email, password)
-        user = User.query.filter_by(email=email).first()
-        print(user)
-        if user:
-            if user.password == password :
-                flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
-                return redirect(url_for('views.get_inventory'))
+    try:   
+        if request.method == 'POST':
+            email = request.form.get('email')
+            password = request.form.get('password')
+            user = User.query.filter_by(email=email).first()
+            if user:
+                if user.role == "student":
+                    if(can_student_login(password,user)):
+                        return redirect(url_for('views.get_inventory')) 
+                else:
+                    print("Replace this with Method Call of Admin login")   
             else:
-                flash('Incorrect password, try again.', category='error')
-        else:
-            flash('Sorry! Your email is not registered with Shop Easy.', category='error')
-
-    return render_template("login.html", user=current_user)
+                flash('Sorry! Your email is not registered with Shop Easy.', category='error')         
+        return render_template("login.html", user=current_user)     
+    except Exception as e:
+        logging.exception(e)
+        flash('An unexpected error occurred. Please try again later.', category='error')
 
 @auth.route('/logout')
 @login_required
