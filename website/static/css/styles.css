@@ -14,3 +14,18 @@
   padding: 10px 20px;
   font-size: 1.5rem;
 }
+
+.custom-card-text {
+  font-size: 12px;
+  font-family: "Comic Sans MS", cursive;
+}
+
+.inventory-font {
+  font-family: "Arial Black", sans-serif;
+}
+.card-btn-size {
+  width: 220px;
+  height: 40px;
+  padding: 10px 20px;
+  font-size: 12px;
+}

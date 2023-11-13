@@ -1,6 +1,11 @@
+'''
+Models for shop-easy app
+Refer docs/shop-easy-models-ER-diagram to understand 
+dependencies and relationships
+'''
 from sqlalchemy.sql import func
 from flask_login import UserMixin
-from db import db
+from . import db
 
 class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
@@ -38,13 +43,20 @@ class Inventory(db.Model):
     quantity = db.Column(db.Integer)
     category = db.Column(db.String(100))
     weight = db.Column(db.Integer)
-    expiry_date = db.Column(db.DateTime)
+    expiry_date = db.Column(db.Date)
 
     orders = db.relationship('Order', secondary='order_inventory_relation', back_populates='inventory')
     favorites = db.relationship('Favorite', secondary='inventory_favorite_relation', back_populates='inventory')
 
     def __repr__(self):
         return f"<Product {self.name}>"
+    
+    def __init__(self, expiry_date):
+        self.expiry_date = expiry_date
+
+    def format_date(self):
+        # Convert the date to "MM/DD/YYYY" format when needed
+        return self.expiry_date.strftime("%m/%d/%Y")
 
 class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
