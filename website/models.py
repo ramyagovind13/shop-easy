@@ -86,3 +86,17 @@ class Review(db.Model):
     suggestion = db.Column(db.Text)
 
     user = db.relationship('User', back_populates='reviews')
+
+class InvetoryCartRelation(db.Model):
+    __tablename__ = 'inventory_cart_relation'
+
+    cart_id = db.Column(db.Integer, db.ForeignKey('cart.cart_id'), primary_key=True)
+    sku = db.Column(db.Integer, db.ForeignKey('inventory.sku'), primary_key=True)
+  
+class Cart(db.Model):
+    cart_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    quantity = db.Column(db.Integer, default =1)
+
+    user = db.relationship('User', back_populates='cart')
+    inventory = db.relationship('Inventory', secondary='inventory_cart_relation', back_populates='cart')
