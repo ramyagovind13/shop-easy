@@ -50,14 +50,24 @@ block content %}
                     >Quantity</label
                   >
                 </div>
-                <select class="custom-select" id="quantity" name="quantity">
-                  <option selected>1</option>
+                <select
+                  class="custom-select"
+                  id="quantity_{{ product.sku }}"
+                  name="quantity"
+                >
+                  <option>1</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
                 </select>
               </div>
-              <a href="" class="btn btn-primary card-btn-size">Add to Cart</a>
+
+              <button
+                class="btn btn-primary addToCartButton col-12"
+                data-sku="{{ product.sku }}"
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         </div>
