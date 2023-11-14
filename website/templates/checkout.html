@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block title %}Checkout Page{% endblock %} {% block
+content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="col-md-6 text-center">
+    <h3 align="center">Checkout</h3>
+    <div class="table-responsive">
+      <table class="table" style="margin: 0 auto; width: 70%">
+        <thead>
+          <tr style="text-align: center">
+            <th>Product</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody id="cartItemsTable">
+          <!-- Replace the sample data with your actual product and quantity information -->
+          <tr style="text-align: center">
+            <td>Product 1</td>
+            <td>2</td>
+          </tr>
+          <tr style="text-align: center">
+            <td>Product 2</td>
+            <td>1</td>
+          </tr>
+          <!-- Add more rows as needed -->
+        </tbody>
+      </table>
+    </div>
+    <div
+      id="totalQuantity"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+      "
+    >
+      Total Quantity: 3
+      <!-- Replace with your dynamic total quantity -->
+    </div>
+    <div style="margin-bottom: 20px"></div>
+    <div align="center">
+      <button id="checkoutBtn" class="btn btn-primary">Checkout</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

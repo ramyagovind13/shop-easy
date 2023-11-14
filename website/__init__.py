@@ -3,9 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager #flask_login creates connection between the cookie and actual data in the DB
 
 db = SQLAlchemy()
-
+app = Flask(__name__)
 def create_app():
-    app = Flask(__name__)
+    
     app.config['SECRET_KEY'] = 'secretkey'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Adarsh123#@localhost:5432/shop_easy'
     db.init_app(app)
