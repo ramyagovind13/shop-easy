@@ -38,13 +38,11 @@ def add_inventory():
     expiry_date = datetime.strptime(request.form.get("expiry_date"), '%m-%d-%Y')
     print(f"Name: {name}, Description: {description}, Quantity: {quantity}, Category: {category}, Weight: {weight}, Expiry Date: {expiry_date}")
     # Validating the null check of input fields
-    if None or "" in (name, description, quantity, category, weight, expiry_date):
+    if any(value is None or value == "" for value in (name, description, quantity, category, weight, expiry_date)):
         flash("One or more form values are missing", category='error')
-        return render_template("login.html", user=current_user) #Redirect the URL to add_inventory html page
+        return render_template("login.html", user=current_user)   
     else:
         status = add(name, description, quantity, category, weight, expiry_date)
         return redirect(url_for('views.get_inventory')) if status else render_template("login.html", user=current_user) #Redirect the else part to add_inventory html page 
-    
-    
     
 

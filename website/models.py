@@ -48,11 +48,16 @@ class Inventory(db.Model):
     orders = db.relationship('Order', secondary='order_inventory_relation', back_populates='inventory')
     favorites = db.relationship('Favorite', secondary='inventory_favorite_relation', back_populates='inventory')
 
+    def __init__(self, name, description, quantity, category, weight, expiry_date):
+        self.name = name
+        self.description = description
+        self.quantity = quantity
+        self.category = category
+        self.weight = weight
+        self.expiry_date = expiry_date
+
     def __repr__(self):
         return f"<Product {self.name}>"
-    
-    def __init__(self, expiry_date):
-        self.expiry_date = expiry_date
 
     def format_date(self):
         # Convert the date to "MM/DD/YYYY" format when needed
