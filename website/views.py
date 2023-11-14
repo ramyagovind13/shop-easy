@@ -20,8 +20,10 @@ def home():
 def get_inventory():
     try:
         inventory_products = get_inventory_details()
-        print(inventory_products)
-        return render_template("get_inventory.html", products=inventory_products)
+        if inventory_products:
+            unique_categories = set(product.category for product in inventory_products)
+            return render_template("get_inventory.html", products=inventory_products,
+                                   categories=unique_categories)
     except Exception as e:
         logging.exception(e)
 
@@ -45,5 +47,4 @@ def add_inventory():
     
     
     
-        
 

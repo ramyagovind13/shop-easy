@@ -9,26 +9,27 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    try:   
-        if request.method == 'POST':
-            email = request.form.get('email')
-            password = request.form.get('password')
-            user = User.query.filter_by(email=email).first()
-            if user:
-                if user.role == "student":
-                    if(can_student_login(password,user)):
-                        return redirect(url_for('views.get_inventory')) 
-                else:
-                    print("Replace this with Method Call of Admin login")   
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        print(email, password)
+        user = User.query.filter_by(email=email).first()
+        print(user)
+        if user:
+            if user.password == password :
+                flash('Logged in successfully!', category='success')
+                login_user(user, remember=True)
+                return redirect(url_for('views.get_inventory'))
             else:
-                flash('Sorry! Your email is not registered with Shop Easy.', category='error')         
-        return render_template("login.html", user=current_user)     
-    except Exception as e:
-        logging.exception(e)
-        flash('An unexpected error occurred. Please try again later.', category='error')
+                flash('Incorrect password, try again.', category='error')
+        else:
+            flash('Sorry! Your email is not registered with Shop Easy.', category='error')
+
+    return render_template("login.html", user=current_user)
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('views.home'))
+
