@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     orders = db.relationship('Order', back_populates='user')
     favorites = db.relationship('Favorite', back_populates='user')
     reviews = db.relationship('Review', back_populates='user')
+    carts = db.relationship('Cart', back_populates='user')
 
     def __repr__(self):
         return f"<User {self.email}>"
@@ -47,6 +48,8 @@ class Inventory(db.Model):
 
     orders = db.relationship('Order', secondary='order_inventory_relation', back_populates='inventory')
     favorites = db.relationship('Favorite', secondary='inventory_favorite_relation', back_populates='inventory')
+    carts = db.relationship('Cart', secondary='inventory_cart_relation', back_populates='inventory')
+
 
     def __init__(self, name, description, quantity, category, weight, expiry_date):
         self.name = name
@@ -92,11 +95,13 @@ class InvetoryCartRelation(db.Model):
 
     cart_id = db.Column(db.Integer, db.ForeignKey('cart.cart_id'), primary_key=True)
     sku = db.Column(db.Integer, db.ForeignKey('inventory.sku'), primary_key=True)
+    quantity = db.Column(db.Integer, default =1)
   
 class Cart(db.Model):
     cart_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    quantity = db.Column(db.Integer, default =1)
 
-    user = db.relationship('User', back_populates='cart')
-    inventory = db.relationship('Inventory', secondary='inventory_cart_relation', back_populates='cart')
+    user = db.relationship('User', back_populates='carts')
+    inventory = db.relationship('Inventory', secondary='inventory_cart_relation', back_populates='carts')
+
+
