@@ -6,15 +6,15 @@ document.querySelectorAll(".addToCartButton").forEach(function (button) {
   });
 });
 
-function addToCart(productId, quantity) {
-  console.log("Adding to cart:", productId, "Quantity:", quantity);
+function addToCart(product_id, quantity) {
+  console.log("Adding to cart:", product_id, "Quantity:", quantity);
   var data = {
-    productId: productId,
+    productId: product_id,
     quantity: quantity,
   };
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "/add-to-cart", true);
+  xhr.open("POST", "student/add-to-cart", true);
   xhr.setRequestHeader("Content-Type", "application/json");
 
   xhr.onreadystatechange = function () {

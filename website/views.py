@@ -10,6 +10,8 @@ from datetime import datetime
 from student.inventory_details import get_inventory_details
 from student.cart import add_cart
 from admin.inventory import add
+from student.cart import get_cart_details, get_user_inventory_details
+
 views = Blueprint('views', __name__)
 
 @views.route('/')
@@ -25,6 +27,9 @@ def get_inventory():
             unique_categories = set(product.category for product in inventory_products)
             return render_template("get_inventory.html", products=inventory_products,
                                    categories=unique_categories)
+        else:
+            return render_template("get_inventory.html", products=[],
+                                   categories=[])
     except Exception as e:
         logging.exception(e)
 
@@ -46,6 +51,7 @@ def add_inventory():
         status = add(name, description, quantity, category, weight, expiry_date)
         return redirect(url_for('views.get_inventory')) if status else render_template("login.html", user=current_user) #Redirect the else part to add_inventory html page 
     
+
 @views.route('student/add-to-cart', methods=['POST'])
 @login_required
 def add_to_cart():
@@ -57,3 +63,30 @@ def add_to_cart():
         return jsonify({'message': 'Item added to cart successfully'}), 200
     else:
         return jsonify({'message': 'Sorry! Unexpected error occured while adding the item to the cart'}), 500
+
+
+@views.route('/cart', methods=['GET'])
+@login_required
+def get_cart():
+    try:
+        cart_details = get_cart_details(current_user)
+        inventory_details = get_user_inventory_details(current_user)
+        mapping_dict = {product.sku: product for product in cart_details}
+        cart_products = [
+            {"sku": product_details.sku,
+            "name": product_details.name,
+            "quantity": mapping_dict[product_details.sku].quantity}
+            for product_details in inventory_details
+            if product_details.sku in mapping_dict
+        ]
+        total_quantity = sum(product['quantity'] for product in cart_products)
+        if cart_products:
+            return render_template("checkout.html", cart_details=cart_products,
+                                   total_quantity=total_quantity)
+        else:
+            flash("Cart is Empty !!", category='error')
+            return render_template("checkout.html", cart_details=[],
+                                   total_quantity=0)
+    except Exception as e:
+        logging.exception(e)
+
