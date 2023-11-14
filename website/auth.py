@@ -21,12 +21,11 @@ def login():
                 else:
                     print("Replace this with Method Call of Admin login")   
             else:
-                flash('Sorry! Your email is not registered with Shop Easy.', category='error')         
-        return render_template("login.html", user=current_user)     
+                flash('Sorry! Your email is not registered with Shop Easy.', category='error')             
     except Exception as e:
         logging.exception(e)
         flash('An unexpected error occurred. Please try again later.', category='error')
-
+    return render_template("login.html", user=current_user) 
 @auth.route('/logout')
 @login_required
 def logout():
