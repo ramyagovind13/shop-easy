@@ -1,6 +1,7 @@
 '''
 Student Cart related function definitions
 '''
+
 import logging
 from website.models import Cart, db, InvetoryCartRelation
 from flask_login import current_user
@@ -36,3 +37,18 @@ def add_cart(product_id, quantity):
         logging.exception(e)
         print("Sorry! Unable to add the Inventory")
         return False
+
+
+
+def get_cart_details(current_user):
+    user_cart = current_user.carts
+    cart_id = user_cart[0].cart_id
+    if cart_id:
+        cart_details = InvetoryCartRelation.query.filter_by(cart_id=cart_id).all()
+    return cart_details
+    
+def get_user_inventory_details(current_user):
+    user_cart = current_user.carts
+    inventory_details = user_cart[0].inventory
+    return inventory_details
+
