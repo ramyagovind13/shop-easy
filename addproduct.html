@@ -1,67 +1,52 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Add New Product</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-      }
+{% extends "base.html" %} {% block title %}Add inventory{% endblock %} {% block
+content %}
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Add New Product</h1>
 
-      form {
-        width: 300px;
-        margin: 0 auto;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
-      input[type="text"],
-      textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-      }
-
-      input[type="submit"] {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-      }
-
-      input[type="submit"]:hover {
-        background-color: #45a049;
-      }
-    </style>
-  </head>
-  <body>
-    <h1 style="text-align: center">Add New Product</h1>
-
-    <form action="add_product.php" method="post">
+  <form action="{{ url_for('add_product') }}" method="post">
+    <div class="form-group">
       <label for="product_name">Product Name:</label>
       <input
         type="text"
+        class="form-control"
         id="product_name"
         name="product_name"
         required
-      /><br /><br />
+      />
+    </div>
 
+    <div class="form-group">
       <label for="category">Category:</label>
-      <input type="text" id="category" name="category" required /><br /><br />
+      <input
+        type="text"
+        class="form-control"
+        id="category"
+        name="category"
+        required
+      />
+    </div>
 
+    <div class="form-group">
       <label for="description">Description:</label>
-      <textarea id="description" name="description" required></textarea
-      ><br /><br />
+      <textarea
+        class="form-control"
+        id="description"
+        name="description"
+        required
+      ></textarea>
+    </div>
 
-      <label for="measure">Quantity:</label>
-      <input type="text" id="measure" name="Quantity" required /><br /><br />
-
-      <!-- You can add more fields for other product information here -->
-
-      <input type="submit" value="Add Product" />
-    </form>
-  </body>
-</html>
+    <div class="form-group">
+      <label for="quantity">Quantity:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="quantity"
+        name="quantity"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-success btn-block">Add Product</button>
+  </form>
+</div>
+{% endblock %}
