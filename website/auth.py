@@ -3,7 +3,7 @@ from flask import flash
 from flask import Blueprint, request, render_template, redirect, url_for
 from flask_login import login_required, logout_user, current_user
 from student.auth import can_student_login
-from admin.auth import can_admingi_login
+from admin.auth import can_admin_login
 from website.models import User
 
 auth = Blueprint('auth', __name__)
