@@ -15,9 +15,6 @@ app.config['MAIL_PASSWORD'] = 'your_email_password'
 app.config['MAIL_DEFAULT_SENDER'] = 'your_email@example.com'
 
 mail = Mail(app)
-
-
-
 db = SQLAlchemy()
 
 def create_app():

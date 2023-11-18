@@ -6,19 +6,13 @@ import logging
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from datetime import datetime
-from flask_mail import Mail, Message
-from app import app 
+
 from student.inventory_details import get_inventory_details
 from student.cart import add_cart
 from admin.inventory import add
 from student.cart import get_cart_details, get_user_inventory_details
-from flask_mail import Message
-from datetime import dateti
-
-
 
 views = Blueprint('views', __name__)
-mail = Mail(app)
 
 @views.route('/')
 def home():
@@ -38,8 +32,6 @@ def get_inventory():
                                    categories=[])
     except Exception as e:
         logging.exception(e)
-
-
 
 @views.route('admin/add-inventory', methods=['POST'])
 @login_required
@@ -71,16 +63,6 @@ def add_to_cart():
         return jsonify({'message': 'Item added to cart successfully'}), 200
     else:
         return jsonify({'message': 'Sorry! Unexpected error occured while adding the item to the cart'}), 500
-
-def send_order_confirmation_email(email):
-    try:
-        msg = Message('Order Confirmation', recipients=[email])
-        msg.body = 'Thank you for placing an order with Shop Easy. Your order has been successfully placed.'
-        mail.send(msg)
-        return True
-    except Exception as e:
-        logging.exception(e)
-        return False
 
 
 @views.route('/cart', methods=['GET'])
