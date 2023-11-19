@@ -1,0 +1,112 @@
+{% extends "base.html" %} {% block title %} Update Product {% endblock %} {%
+block navbar %} {# Empty block to exclude the navigation bar in products.html #}
+{% endblock %} {% block content %} {# Empty block to exclude the content #} {%
+endblock %} {% block admin%}
+<div class="container-md vh-100">
+  <h2 class="mt-4 mb-4">Update Product</h2>
+  <form
+    id="updateForm"
+    method="post"
+    action="{{ url_for('views.edit_product', sku=product.sku) }}"
+    class="mx-auto"
+  >
+    <div class="form-group row mb-3">
+      <label for="name" class="col-md-6 col-form-label"
+        ><strong>Product Name:</strong></label
+      >
+      <div class="col-md-6">
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value="{{ product.name }}"
+          class="form-control"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group row mb-3">
+      <label for="description" class="col-md-6 col-form-label"
+        ><strong>Description:</strong></label
+      >
+      <div class="col-md-6">
+        <textarea id="description" name="description" class="form-control">
+{{ product.description }}</textarea
+        >
+      </div>
+    </div>
+
+    <div class="form-group row mb-3">
+      <label for="quantity" class="col-md-6 col-form-label"
+        ><strong>Quantity:</strong></label
+      >
+      <div class="col-md-6">
+        <input
+          type="number"
+          id="quantity"
+          name="quantity"
+          value="{{ product.quantity }}"
+          class="form-control"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group row mb-3">
+      <label for="category" class="col-md-6 col-form-label"
+        ><strong>Category:</strong></label
+      >
+      <div class="col-md-6">
+        <input
+          type="text"
+          id="category"
+          name="category"
+          value="{{ product.category }}"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="form-group row mb-3">
+      <label for="weight" class="col-md-6 col-form-label"
+        ><strong>Weight (in pound):</strong></label
+      >
+      <div class="col-md-6">
+        <input
+          type="number"
+          id="weight"
+          name="weight"
+          value="{{ product.weight }}"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="form-group row mb-6">
+      <label for="expiry_date" class="col-md-6 col-form-label"
+        ><strong>Expiry Date:</strong></label
+      >
+      <div class="col-md-6">
+        <input
+          type="date"
+          id="expiry_date"
+          name="expiry_date"
+          value="{{ product.expiry_date }}"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="form-group row mt-5">
+      <div class="col-md-6 offset-md-5">
+        <button type="submit" class="btn btn-primary">Update Product</button>
+      </div>
+    </div>
+  </form>
+</div>
+<script
+  type="text/javascript"
+  src="{{ url_for('static', filename='js/admin.js') }}"
+></script>
+{% endblock %}

@@ -23,3 +23,17 @@ def add(name, description, quantity, category, weight, expiry_date):
         flash("Sorry! Unable to add the Inventory", category='error')
         return False
     
+def update(product, name, description, quantity, category, weight, expiry_date):
+    try:
+        product.name = name
+        product.description = description
+        product.quantity = quantity
+        product.category = category
+        product.weight = weight
+        product.expiry_date = expiry_date
+        db.session.add(product)
+        db.session.commit()   
+        return True
+    except Exception as e:
+        logging.exception(e)
+        return False

@@ -38,12 +38,13 @@
 
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="navbar-nav ms-auto">
-            <!-- Use 'ms-auto' for right alignment -->
             {% if current_user.is_authenticated %}
             <li class="nav-item">
+              {% if current_user.role == 'student' %}
               <a class="nav-link" id="cart" href="/cart">
                 <i class="fas fa-shopping-cart"></i> Cart
               </a>
+              {% endif %}
             </li>
             <li class="nav-item">
               <a class="nav-link" id="logout" href="/logout">Logout</a>
@@ -90,6 +91,7 @@
     <div class="background-gradient">
       <div class="container">{% block content %} {% endblock %}</div>
     </div>
+    <div>{% block admin%} {% endblock %}</div>
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
@@ -117,6 +119,10 @@
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/add_to_cart.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/admin.js') }}"
     ></script>
   </body>
 </html>

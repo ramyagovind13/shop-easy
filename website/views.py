@@ -7,9 +7,10 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from datetime import datetime
 
-from student.inventory_details import get_inventory_details
+from student.inventory_details import get_inventory_details, \
+    get_inventory_product
 from student.cart import add_cart
-from admin.inventory import add
+from admin.inventory import add, update
 from student.cart import get_cart_details, get_user_inventory_details
 
 views = Blueprint('views', __name__)
@@ -102,3 +103,28 @@ def get_products():
             return render_template("products.html", products=[])
     except Exception as e:
         logging.exception(e)
+
+@views.route('/edit_product/<sku>', methods=['GET', 'POST'])
+def edit_product(sku):
+    
+    product = get_inventory_product(sku)
+
+    if request.method == 'POST':
+        name = request.form.get("name")
+        description = request.form.get("description")
+        quantity = request.form.get("quantity")
+        category = request.form.get("category")
+        weight = request.form.get("weight")
+        expiry_date = request.form.get("expiry_date")
+        
+        if any(value is None or value == "" for value in (name, description, quantity, category, weight, expiry_date)):
+            flash("One or more form values are missing", category='error')
+        else:
+            status = update(product, name, description, quantity, category, weight, expiry_date)
+            if status:
+                flash("Product updated successfully !", category='success')
+                return render_template('admin.html')
+            else:
+                flash("Product update failed !", category='error')
+       
+    return render_template('update_product.html', product=product)
