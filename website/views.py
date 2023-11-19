@@ -90,3 +90,15 @@ def get_cart():
     except Exception as e:
         logging.exception(e)
 
+
+@views.route('/products', methods=['GET'])
+@login_required
+def get_products():
+    try:
+        inventory_products = get_inventory_details()
+        if inventory_products:
+            return render_template("products.html", products=inventory_products)
+        else:
+            return render_template("products.html", products=[])
+    except Exception as e:
+        logging.exception(e)

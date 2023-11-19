@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %} Product List {% endblock %} {% block
+navbar %} {# Empty block to exclude the navigation bar in products.html #} {%
+endblock %} {% block content %}
+<div class="container">
+  <h2 class="mt-4 mb-4">Product List</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Available Quantity</th>
+          <th>Expiry date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{ product.sku }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.category }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.expiry_date}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
