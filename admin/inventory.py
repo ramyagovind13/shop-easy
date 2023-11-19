@@ -37,3 +37,12 @@ def update(product, name, description, quantity, category, weight, expiry_date):
     except Exception as e:
         logging.exception(e)
         return False
+    
+def delete(product):
+    try:
+        db.session.delete(product)
+        db.session.commit()
+        return True
+    except Exception as e:
+        logging.exception(e)
+        return False

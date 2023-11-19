@@ -10,7 +10,7 @@ from datetime import datetime
 from student.inventory_details import get_inventory_details, \
     get_inventory_product
 from student.cart import add_cart
-from admin.inventory import add, update
+from admin.inventory import add, update, delete
 from student.cart import get_cart_details, get_user_inventory_details
 
 views = Blueprint('views', __name__)
@@ -128,3 +128,23 @@ def edit_product(sku):
                 flash("Product update failed !", category='error')
        
     return render_template('update_product.html', product=product)
+
+
+@views.route('/delete_product/<sku>', methods=['DELETE'])
+def delete_product(sku):
+
+    product = get_inventory_product(sku)
+
+    if product:
+        status = delete(product)
+        if status:
+            flash("Product deleted successfully!", category='success')
+            response_data = {'status': 'success', 'message': 'Product deleted successfully!'}
+        else:
+            flash("Product deletion failed!", category='error')
+            response_data = {'status': 'error', 'message': 'Product deletion found'}
+    else:
+        flash("Product not found", category='error')
+        response_data = {'status': 'error', 'message': 'Product not found'}
+    
+    return jsonify(response_data)
