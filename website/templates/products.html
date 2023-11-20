@@ -1,8 +1,10 @@
 {% extends "base.html" %} {% block title %} Product List {% endblock %} {% block
 navbar %} {# Empty block to exclude the navigation bar in products.html #} {%
-endblock %} {% block content %}
+endblock %} {% block content %} {# Empty block to exclude the content #} {%
+endblock %} {% block admin%}
+
 <div class="container">
-  <h2 class="mt-4 mb-4">Product List</h2>
+  <h2 class="mt-4 mb-4">Products List</h2>
 
   <div class="table-responsive">
     <table class="table table-bordered">
@@ -13,6 +15,7 @@ endblock %} {% block content %}
           <th>Category</th>
           <th>Available Quantity</th>
           <th>Expiry date</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -23,10 +26,31 @@ endblock %} {% block content %}
           <td>{{ product.category }}</td>
           <td>{{ product.quantity }}</td>
           <td>{{ product.expiry_date}}</td>
+          <td>
+            <a
+              href="#"
+              class="btn btn-primary btn-sm edit-product"
+              data-sku="{{ product.sku }}"
+            >
+              Edit
+            </a>
+            <a
+              href="#"
+              class="btn btn-danger btn-sm delete-product"
+              data-sku="{{ product.sku }}"
+            >
+              Delete
+            </a>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+<script
+  type="text/javascript"
+  src="{{ url_for('static', filename='js/admin.js') }}"
+></script>
+
 {% endblock %}
