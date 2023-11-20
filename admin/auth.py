@@ -1,8 +1,8 @@
 from flask import flash
 from flask_login import login_user
 
-def can_admin_login(password, user, role):
-    if user.check_password(password):
+def can_admin_login(password, user):
+    if user.password == password :
         flash('Logged in successfully!', category='success')
         login_user(user, remember=True)
         return True
