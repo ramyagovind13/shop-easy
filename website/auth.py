@@ -3,6 +3,7 @@ from flask import flash
 from flask import Blueprint, request, render_template, redirect, url_for
 from flask_login import login_required, logout_user, current_user
 from student.auth import can_student_login
+from admin.auth import can_admin_login
 from website.models import User
 
 auth = Blueprint('auth', __name__)
@@ -17,9 +18,11 @@ def login():
             if user:
                 if user.role == "student":
                     if(can_student_login(password,user)):
-                        return redirect(url_for('views.get_inventory')) 
-                else:
-                    print("Replace this with Method Call of Admin login")   
+                        return redirect(url_for('views.get_inventory'))
+                    else:  
+                        if user.role == "admin":
+                            if (can_admin_login(password, user)):                            
+                                 return redirect(url_for('views.get_inventory'))      
             else:
                 flash('Sorry! Your email is not registered with Shop Easy.', category='error')             
     except Exception as e:
