@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %} Order History{% endblock %} {% block
+content %}
+<div class="container align-items-center vh-100">
+  {% for order in orders %}
+  <div class="row">
+    <div class="col-12 mt-5">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title order-font">
+            Order ID: {{ order.order.order_id }} | Order placed:
+            {{order.order.date}} | Total Quantity: {{ order.order.units_sold }}
+            | Status: {{ order.order.order_status }}
+          </h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for item in order['items'] %}
+          <li
+            class="list-group-item custom-card-text order-font order-font-size"
+          >
+            {{ item.name }} - Quantity: {{ item.quantity }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

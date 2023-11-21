@@ -19,16 +19,18 @@ def login():
                 if user.role == "student":
                     if(can_student_login(password,user)):
                         return redirect(url_for('views.get_inventory'))
-                    else:  
-                        if user.role == "admin":
-                            if (can_admin_login(password, user)):                            
-                                 return redirect(url_for('views.get_inventory'))      
+                else:  
+                    if user.role == "admin":
+                        if (can_admin_login(password, user)):                         
+                            return render_template("admin.html", user=current_user)      
             else:
-                flash('Sorry! Your email is not registered with Shop Easy.', category='error')             
+                flash('Sorry! Your email is not registered with Shop Easy.', category='error')              
     except Exception as e:
         logging.exception(e)
         flash('An unexpected error occurred. Please try again later.', category='error')
     return render_template("login.html", user=current_user) 
+
+
 @auth.route('/logout')
 @login_required
 def logout():

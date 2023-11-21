@@ -38,14 +38,17 @@
 
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="navbar-nav ms-auto">
-            {% if current_user.is_authenticated %}
+            {% if current_user.is_authenticated %} {% if current_user.role ==
+            'student' %}
             <li class="nav-item">
-              {% if current_user.role == 'student' %}
               <a class="nav-link" id="cart" href="/cart">
                 <i class="fas fa-shopping-cart"></i> Cart
               </a>
-              {% endif %}
             </li>
+            <li class="nav-item">
+              <a class="nav-link" id="orders" href="/orders">Orders</a>
+            </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link" id="logout" href="/logout">Logout</a>
             </li>

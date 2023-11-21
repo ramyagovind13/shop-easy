@@ -41,11 +41,15 @@ def add_cart(product_id, quantity):
 
 
 def get_cart_details(current_user):
-    user_cart = current_user.carts
-    cart_id = user_cart[0].cart_id
-    if cart_id:
-        cart_details = InvetoryCartRelation.query.filter_by(cart_id=cart_id).all()
-    return cart_details
+    try:
+        user_cart = current_user.carts
+        cart_id = user_cart[0].cart_id
+        if cart_id:
+            cart_details = InvetoryCartRelation.query.filter_by(cart_id=cart_id).all()
+        return cart_details
+    except Exception as e:
+        logging.exception(e)
+        return None
     
 def get_user_inventory_details(current_user):
     user_cart = current_user.carts

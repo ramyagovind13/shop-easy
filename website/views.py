@@ -12,6 +12,7 @@ from student.inventory_details import get_inventory_details, \
 from student.cart import add_cart
 from admin.inventory import add, update, delete
 from student.cart import get_cart_details, get_user_inventory_details
+from student.order import get_order_details, get_ordered_products
 
 views = Blueprint('views', __name__)
 
@@ -84,12 +85,13 @@ def get_cart():
         if cart_products:
             return render_template("checkout.html", cart_details=cart_products,
                                    total_quantity=total_quantity)
-        else:
-            flash("Cart is Empty !!", category='error')
-            return render_template("checkout.html", cart_details=[],
+        flash("Cart is Empty !!", category='error')
+        return render_template("checkout.html", cart_details=[],
                                    total_quantity=0)
     except Exception as e:
         logging.exception(e)
+        return render_template("checkout.html", cart_details=[],
+                                   total_quantity=0)
 
 
 @views.route('/products', methods=['GET'])
@@ -148,3 +150,16 @@ def delete_product(sku):
         response_data = {'status': 'error', 'message': 'Product not found'}
     
     return jsonify(response_data)
+
+@views.route('/orders', methods=['GET'])
+@login_required
+def get_orders():
+    try:
+        order_details = get_order_details(current_user)
+        products_ordered = get_ordered_products(order_details)
+        if not products_ordered:
+            flash("No order history available !!", category='success')
+        return render_template('order.html', orders=products_ordered)
+    except Exception as e:
+        logging.exception(e)
+        return render_template('order.html', orders=[])
