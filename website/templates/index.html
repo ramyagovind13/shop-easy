@@ -1,0 +1,37 @@
+<body>
+  {% extends "base.html" %} {% block title %}index{% endblock %} {% block
+  content %}
+  <div class="container">
+    <h1 style="text-align: center">Add Product To Inventory</h1>
+
+    <form action="{{ url_for('add_item') }}" method="post">
+      <label for="item_name">Product Name:</label>
+      <input type="text" id="item_name" name="item_name" required />
+
+      <label for="category">Category:</label>
+      <input type="text" id="catergory" name="category" required />
+
+      <label for="description">Description:</label>
+      <textarea
+        type="text"
+        id="description"
+        name="description"
+        required
+      ></textarea>
+
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" name="quantity" required />
+
+      <button type="submit">Add to Inventory</button>
+    </form>
+
+    <ul>
+      {% for item in inventory %}
+      <li>{{ item.item_name }} - Quantity: {{ item.quantity }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  {% endblock %}
+</body>
