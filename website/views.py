@@ -7,11 +7,12 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from datetime import datetime
 
-from student.inventory_details import get_inventory_details
+from student.inventory_details import get_inventory_details, \
+    get_inventory_product
 from student.cart import add_cart
-from admin.inventory import add
+from admin.inventory import add, update, delete
 from student.cart import get_cart_details, get_user_inventory_details
-from student.order import place_order
+from student.order import get_order_details, get_ordered_products, place_order
 
 views = Blueprint('views', __name__)
 
@@ -84,14 +85,85 @@ def get_cart():
         if cart_products:
             return render_template("checkout.html", cart_details=cart_products,
                                    total_quantity=total_quantity)
-        else:
-            flash("Cart is Empty !!", category='error')
-            return render_template("checkout.html", cart_details=[],
+        flash("Cart is Empty !!", category='error')
+        return render_template("checkout.html", cart_details=[],
                                    total_quantity=0)
     except Exception as e:
         logging.exception(e)
+        return render_template("checkout.html", cart_details=[],
+                                   total_quantity=0)
 
 
+@views.route('/products', methods=['GET'])
+@login_required
+def get_products():
+    try:
+        inventory_products = get_inventory_details()
+        if inventory_products:
+            return render_template("products.html", products=inventory_products)
+        else:
+            return render_template("products.html", products=[])
+    except Exception as e:
+        logging.exception(e)
+
+@views.route('/edit_product/<sku>', methods=['GET', 'POST'])
+def edit_product(sku):
+    
+    product = get_inventory_product(sku)
+
+    if request.method == 'POST':
+        name = request.form.get("name")
+        description = request.form.get("description")
+        quantity = request.form.get("quantity")
+        category = request.form.get("category")
+        weight = request.form.get("weight")
+        expiry_date = request.form.get("expiry_date")
+        
+        if any(value is None or value == "" for value in (name, description, quantity, category, weight, expiry_date)):
+            flash("One or more form values are missing", category='error')
+        else:
+            status = update(product, name, description, quantity, category, weight, expiry_date)
+            if status:
+                flash("Product updated successfully !", category='success')
+                return render_template('admin.html')
+            else:
+                flash("Product update failed !", category='error')
+       
+    return render_template('update_product.html', product=product)
+
+
+@views.route('/delete_product/<sku>', methods=['DELETE'])
+def delete_product(sku):
+
+    product = get_inventory_product(sku)
+
+    if product:
+        status = delete(product)
+        if status:
+            flash("Product deleted successfully!", category='success')
+            response_data = {'status': 'success', 'message': 'Product deleted successfully!'}
+        else:
+            flash("Product deletion failed!", category='error')
+            response_data = {'status': 'error', 'message': 'Product deletion found'}
+    else:
+        flash("Product not found", category='error')
+        response_data = {'status': 'error', 'message': 'Product not found'}
+    
+    return jsonify(response_data)
+
+@views.route('/orders', methods=['GET'])
+@login_required
+def get_orders():
+    try:
+        order_details = get_order_details(current_user)
+        products_ordered = get_ordered_products(order_details)
+        if not products_ordered:
+            flash("No order history available !!", category='success')
+        return render_template('order.html', orders=products_ordered)
+    except Exception as e:
+        logging.exception(e)
+        return render_template('order.html', orders=[])
+    
 @views.route('student/place-order', methods=['POST'])
 @login_required
 def order():

@@ -23,3 +23,11 @@
 .inventory-font {
   font-family: "Arial Black", sans-serif;
 }
+
+.order-font {
+  font-family: "Futura", "Trebuchet MS", sans-serif;
+}
+
+.order-font-size {
+  font-size: 16px;
+}

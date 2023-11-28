@@ -5,7 +5,7 @@ const originalCategoryList = categoryList.innerHTML;
 categoryList.addEventListener("click", (event) => {
   const selectedCategory = event.target.getAttribute("data-category");
 
-  categoryList.innerHTML = originalCategoryList; // Restore the original list
+  categoryList.innerHTML = originalCategoryList;
 
   productCards.forEach((card) => {
     const cardCategory = card.getAttribute("data-category");

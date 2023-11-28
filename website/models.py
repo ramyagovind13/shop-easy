@@ -38,6 +38,13 @@ class InventoryFavoriteRelation(db.Model):
     favorite_id = db.Column(db.Integer, db.ForeignKey('favorite.favorite_id'), primary_key=True)
     sku = db.Column(db.Integer, db.ForeignKey('inventory.sku'), primary_key=True)
     
+class InvetoryCartRelation(db.Model):
+    __tablename__ = 'inventory_cart_relation'
+
+    cart_id = db.Column(db.Integer, db.ForeignKey('cart.cart_id'), primary_key=True)
+    sku = db.Column(db.Integer, db.ForeignKey('inventory.sku'), primary_key=True)
+    quantity = db.Column(db.Integer, default =1)
+
 class Inventory(db.Model):
     sku = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250))
@@ -91,18 +98,9 @@ class Review(db.Model):
 
     user = db.relationship('User', back_populates='reviews')
 
-class InvetoryCartRelation(db.Model):
-    __tablename__ = 'inventory_cart_relation'
-
-    cart_id = db.Column(db.Integer, db.ForeignKey('cart.cart_id'), primary_key=True)
-    sku = db.Column(db.Integer, db.ForeignKey('inventory.sku'), primary_key=True)
-    quantity = db.Column(db.Integer, default =1)
-  
 class Cart(db.Model):
     cart_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
 
     user = db.relationship('User', back_populates='carts')
     inventory = db.relationship('Inventory', secondary='inventory_cart_relation', back_populates='carts')
-
-
