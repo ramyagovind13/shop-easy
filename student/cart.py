@@ -24,7 +24,7 @@ def add_cart(product_id, quantity):
         print("Existing relation check done")
         if existing_relation:
             # If the item is already in the cart, update the quantity
-            existing_relation.quantity += quantity
+            existing_relation.quantity += int(quantity)
         else:
             # If the item is not in the cart, create a new relation
             inventoty_cart= InvetoryCartRelation(cart_id=cart_record.cart_id, sku=product_id, quantity=quantity)

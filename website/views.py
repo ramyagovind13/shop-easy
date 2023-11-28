@@ -12,7 +12,7 @@ from student.inventory_details import get_inventory_details, \
 from student.cart import add_cart
 from admin.inventory import add, update, delete
 from student.cart import get_cart_details, get_user_inventory_details
-from student.order import get_order_details, get_ordered_products
+from student.order import get_order_details, get_ordered_products, place_order
 
 views = Blueprint('views', __name__)
 
@@ -163,3 +163,15 @@ def get_orders():
     except Exception as e:
         logging.exception(e)
         return render_template('order.html', orders=[])
+    
+@views.route('student/place-order', methods=['POST'])
+@login_required
+def order():
+    data = request.get_json()
+    status = place_order(data)  
+    if status:
+        return jsonify({'message': 'Order placed successfully'}), 201
+    else:
+        return jsonify({'message': 'Sorry! Unexpected error occured while placing the order'}), 500
+
+

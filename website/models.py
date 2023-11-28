@@ -27,6 +27,7 @@ class User(db.Model, UserMixin):
 
 class OrderInventoryRelation(db.Model):
     __tablename__ = 'order_inventory_relation'
+    quantity = db.Column(db.Integer, nullable=False)
 
     order_id = db.Column(db.Integer, db.ForeignKey('order.order_id'), primary_key=True)
     sku = db.Column(db.Integer, db.ForeignKey('inventory.sku'), primary_key=True)
