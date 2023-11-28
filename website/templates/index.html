@@ -4,7 +4,7 @@ content %}
   <h2 class="mt-4 mb-4">Add Product To Inventory</h2>
   <form
     id="addprod"
-    action="{{ url_for('add_item') }}"
+    action="{{ url_for('views.add_inventory') }}"
     method="post"
     class="mx-auto"
   >
@@ -17,7 +17,6 @@ content %}
           type="text"
           id="name"
           name="name"
-          value="{{product.name}}"
           class="form-control"
           required
         />
@@ -50,7 +49,6 @@ content %}
           type="number"
           id="quantity"
           name="quantity"
-          value="{{product.quantity}}"
           class="form-control"
           required
         />
@@ -66,7 +64,6 @@ content %}
           type="text"
           id="category"
           name="category"
-          value="{{product.category}}"
           class="form-control"
           required
         />
@@ -82,7 +79,6 @@ content %}
           type="number"
           id="weight"
           name="weight"
-          value="{{product.weight}}"
           class="form-control"
           required
         />
@@ -98,7 +94,6 @@ content %}
           type="date"
           id="expiry_date"
           name="expiry_date"
-          value="{{product.expiry_date}}"
           class="form-control"
           required
         />
@@ -110,12 +105,6 @@ content %}
         <button type="submit" class="btn btn-primary">Add Product</button>
       </div>
     </div>
-
-    <ul>
-      {% for item in inventory %}
-      <li>{{ item.name }} - Quantity: {{ item.quantity }}</li>
-      {% endfor %}
-    </ul>
   </form>
 </div>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
