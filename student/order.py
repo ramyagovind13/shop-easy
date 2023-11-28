@@ -1,6 +1,9 @@
 '''
 Order related function definitions
 '''
+import logging
+from website.models import Order, db, OrderInventoryRelation
+from flask_login import current_user
 
 def get_order_details(current_user):
     user_orders = current_user.orders
@@ -19,9 +22,7 @@ def get_ordered_products(order_details):
             products['items'].append(unit)
         orders.append(products)
     return orders
-import logging
-from website.models import Order, db, OrderInventoryRelation
-from flask_login import current_user
+
 
 def place_order(data):
 
