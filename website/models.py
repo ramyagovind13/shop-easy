@@ -78,7 +78,7 @@ class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     units_sold = db.Column(db.Integer)
-    date = db.Column(db.DateTime, default=func.now())
+    date = db.Column(db.Date)
     order_status = db.Column(db.String(50))
 
     user = db.relationship('User', back_populates='orders')
