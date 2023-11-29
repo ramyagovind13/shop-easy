@@ -4,6 +4,7 @@ Order related function definitions
 import logging
 from website.models import Order, db, OrderInventoryRelation
 from flask_login import current_user
+from datetime import datetime
 
 def get_order_details(current_user):
     user_orders = current_user.orders
@@ -27,10 +28,12 @@ def get_ordered_products(order_details):
 def place_order(data):
 
     try:      
+        print(datetime.now().strftime("%m %d %Y"))
         new_order = Order(
             user_id=current_user.user_id,
+            date=datetime.now().strftime("%m %d %Y"),
             units_sold=sum(item['quantity'] for item in data),
-            order_status='Pending'  
+            order_status='Placed'  
         )      
         db.session.add(new_order)
         db.session.commit()
