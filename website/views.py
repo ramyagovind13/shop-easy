@@ -12,7 +12,7 @@ from student.inventory_details import get_inventory_details, \
 from student.cart import add_cart
 from admin.inventory import add, update, delete
 from student.cart import get_cart_details, get_user_inventory_details
-from student.order import get_order_details, get_ordered_products, place_order
+from student.order import get_order_details, get_ordered_products, place_order, cancel_order
 
 views = Blueprint('views', __name__)
 
@@ -57,15 +57,15 @@ def add_inventory():
 @views.route('student/add-to-cart', methods=['POST'])
 @login_required
 def add_to_cart():
-    data = request.get_json()
-    product_id = data.get('productId')
-    quantity = data.get('quantity')
-    status = add_cart(product_id,quantity)  
-    if status:
+    try:
+        data = request.get_json()
+        product_id = data.get('productId')
+        quantity = data.get('quantity')
+        add_cart(product_id,quantity)  
         return jsonify({'message': 'Item added to cart successfully'}), 200
-    else:
+    except Exception as e:
+        logging.exception(e)
         return jsonify({'message': 'Sorry! Unexpected error occured while adding the item to the cart'}), 500
-
 
 @views.route('/cart', methods=['GET'])
 @login_required
@@ -167,11 +167,27 @@ def get_orders():
 @views.route('student/place-order', methods=['POST'])
 @login_required
 def order():
-    data = request.get_json()
-    status = place_order(data)  
-    if status:
+    try:
+        data = request.get_json()
+        place_order(data)  
         return jsonify({'message': 'Order placed successfully'}), 201
-    else:
+    except Exception as e:
+        logging.exception(e)
         return jsonify({'message': 'Sorry! Unexpected error occured while placing the order'}), 500
 
 
+
+@views.route('student/cancel', methods=['PUT'])
+@login_required
+def cancel():
+    try:
+        order_id = request.get_json().get('order_id')
+        print("OID:"+str(order_id))
+        status = cancel_order(order_id)  
+        if status:
+            return jsonify({'message': 'Order cancelled successfully'}), 200
+        else:
+            return jsonify({'message': 'Sorry! Unable to cancel the order'}), 500
+    except Exception as e:
+        logging.exception(e)
+        return jsonify({'message': 'Sorry! Unexpected error occured while cancelling the order'}), 500

@@ -32,11 +32,10 @@ def add_cart(product_id, quantity):
 
         db.session.commit()
         print("Added to cart successfully")
-        return True
     except Exception as e:
         logging.exception(e)
         print("Sorry! Unable to add the Inventory")
-        return False
+
 
 
 

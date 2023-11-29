@@ -45,12 +45,26 @@ def place_order(data):
             )       
             db.session.add(order_inventory_relation)       
         db.session.commit()
-        return True
 
     except Exception as e:      
         db.session.rollback()
         logging.exception(e)
-        return False
     
     finally:
         db.session.close()
+
+def cancel_order(order_id):
+
+    try:
+        order_to_cancel = Order.query.get(order_id)
+        if order_to_cancel:
+            order_to_cancel.order_status = "Canceled"
+            db.session.commit()
+            return True
+        return False
+    except Exception as e:
+        db.session.rollback()
+        logging.exception(e)
+        return False
+
+        
