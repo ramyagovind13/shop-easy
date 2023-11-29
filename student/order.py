@@ -28,7 +28,6 @@ def get_ordered_products(order_details):
 def place_order(data):
 
     try:      
-        print(datetime.now().strftime("%m %d %Y"))
         new_order = Order(
             user_id=current_user.user_id,
             date=datetime.now().strftime("%m %d %Y"),
