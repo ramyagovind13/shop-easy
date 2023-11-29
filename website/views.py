@@ -182,7 +182,6 @@ def order():
 def cancel():
     try:
         order_id = request.get_json().get('order_id')
-        print("OID:"+str(order_id))
         status = cancel_order(order_id)  
         if status:
             return jsonify({'message': 'Order cancelled successfully'}), 200
