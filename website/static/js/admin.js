@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (target === "dashboard") {
       load_dashboard_content();
+    } else if (target === "add-products") {
+      load_add_products_content();
     } else {
       load_content(target);
     }
@@ -26,6 +28,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   load_dashboard_content();
 });
+
+function load_add_products_content() {
+  $.ajax({
+    url: "/add-inventory",
+    type: "GET",
+    success: function (data) {
+      contentContainer.innerHTML = '<div class="p-4">' + data + "</div>";
+    },
+    error: function () {
+      contentContainer.innerHTML =
+        '<div class="p-4">Error loading content</div>';
+    },
+  });
+}
 
 function load_content(target) {
   $.ajax({
