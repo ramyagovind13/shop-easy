@@ -8,8 +8,9 @@ from flask_login import login_required, current_user
 
 from student.inventory_details import get_inventory_details, \
     get_inventory_product
-from student.cart import add_cart
+from student.cart import add_cart, clear_cart
 from admin.inventory import add, update, delete
+from admin.order import get_all_orders
 from student.cart import get_cart_details, get_user_inventory_details
 from student.order import get_order_details, get_ordered_products, place_order, cancel_order
 
@@ -173,6 +174,7 @@ def order():
     try:
         data = request.get_json()
         cart_details = data['cartDetails']
+        clear_cart(current_user)
         place_order(cart_details)
         flash('Order placed successfully')
         return jsonify({'message': 'Order placed successfully'}), 201
@@ -180,7 +182,6 @@ def order():
         logging.exception(e)
         flash('Sorry! Order placement Failed')
         return jsonify({'message': 'Sorry! Unexpected error occured while placing the order'}), 500
-
 
 
 @views.route('student/cancel', methods=['PUT'])
@@ -196,3 +197,16 @@ def cancel():
     except Exception as e:
         logging.exception(e)
         return jsonify({'message': 'Sorry! Unexpected error occured while cancelling the order'}), 500
+    
+
+@views.route('all-orders', methods=['GET'])
+@login_required 
+def get_all_orders_list():
+    try:
+        all_orders = get_all_orders()
+        if not all_orders:
+            flash("No order history available !!", category='success')
+        return render_template('all_orders.html', orders=all_orders)
+    except Exception as e:
+        logging.exception(e)
+        return render_template('all_orders.html', orders=[])

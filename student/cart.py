@@ -37,8 +37,6 @@ def add_cart(product_id, quantity):
         print("Sorry! Unable to add the Inventory")
 
 
-
-
 def get_cart_details(current_user):
     try:
         user_cart = current_user.carts
@@ -55,3 +53,19 @@ def get_user_inventory_details(current_user):
     inventory_details = user_cart[0].inventory
     return inventory_details
 
+
+def clear_cart(current_user):
+    try:
+        user_cart = current_user.carts
+        cart_id = user_cart[0].cart_id
+        if cart_id:
+            cart_details = InvetoryCartRelation.query.filter_by(cart_id=cart_id).all()
+            for detail in cart_details:
+                db.session.delete(detail)
+
+            db.session.delete(user_cart[0])
+            db.session.commit()
+            return True
+    except Exception as e:
+        logging.exception(e)
+        return None
