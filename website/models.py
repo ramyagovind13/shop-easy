@@ -83,6 +83,16 @@ class Order(db.Model):
 
     user = db.relationship('User', back_populates='orders')
     inventory = db.relationship('Inventory', secondary='order_inventory_relation', back_populates='orders')
+
+    def __init__(self, user_id, units_sold, date, order_status):
+        self.user_id = user_id
+        self.units_sold = units_sold
+        self.date = date
+        self.order_status = order_status
+
+    def format_date(self):
+        # Convert the date to "MM/DD/YYYY" format when needed
+        return self.date.strftime("%m/%d/%Y")
     
 class Favorite(db.Model):
     favorite_id = db.Column(db.Integer, primary_key=True)

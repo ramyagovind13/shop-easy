@@ -3,13 +3,13 @@ content %}
 <div class="container align-items-center vh-100">
   {% for order in orders %}
   <div class="row">
-    <div class="col-12 mt-5">
-      <div class="card">
+    <div class="col-12 mt-3">
+      <div class="card mb-3">
         <div class="card-header">
           <h5 class="card-title order-font">
             Order ID: {{ order.order.order_id }} | Order placed:
-            {{order.order.date}} | Total Quantity: {{ order.order.units_sold }}
-            | Status: {{ order.order.order_status }}
+            {{order.order.format_date()}} | Total Quantity: {{
+            order.order.units_sold }} | Status: {{ order.order.order_status }}
           </h5>
         </div>
         <ul class="list-group list-group-flush">
