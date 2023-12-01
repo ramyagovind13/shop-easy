@@ -1,5 +1,8 @@
-{% extends "base.html" %} {% block title %}Add Product{% endblock %} {% block
-content %}
+{% extends "base.html" %} {% block title %} Add Product {% endblock %} {% block
+navbar %} {# Empty block to exclude the navigation bar in products.html #} {%
+endblock %} {% block content %} {# Empty block to exclude the content #} {%
+endblock %} {% block admin%}
+
 <div class="container-md vh-100">
   <h2 class="mt-4 mb-4">Add Product To Inventory</h2>
   <form
@@ -10,7 +13,7 @@ content %}
   >
     <div class="form-group row mb-3">
       <label for="name" class="col-md-6 col-form-label"
-        ><strong>Product Name:</strong></label
+        ><strong>Product Name</strong></label
       >
       <div class="col-md-6">
         <input
@@ -25,7 +28,7 @@ content %}
 
     <div class="form-group row mb-3">
       <label for="description" class="col-md-6 col-form-label"
-        ><strong>Description:</strong></label
+        ><strong>Description</strong></label
       >
       <div class="col-md-6">
         <textarea
@@ -34,15 +37,13 @@ content %}
           name="description"
           class="form-control"
           required
-        >
-{{product.description}}</textarea
-        >
+        ></textarea>
       </div>
     </div>
 
     <div class="form-group row mb-3">
       <label for="quantity" class="col-md-6 col-form-label"
-        ><strong>Quantity:</strong></label
+        ><strong>Quantity</strong></label
       >
       <div class="col-md-6">
         <input
@@ -57,7 +58,7 @@ content %}
 
     <div class="form-group row mb-3">
       <label for="category" class="col-md-6 col-form-label"
-        ><strong>Category:</strong></label
+        ><strong>Category</strong></label
       >
       <div class="col-md-6">
         <input
@@ -72,7 +73,7 @@ content %}
 
     <div class="form-group row mb-3">
       <label for="weight" class="col-md-6 col-form-label"
-        ><strong>Weight:</strong></label
+        ><strong>Weight</strong></label
       >
       <div class="col-md-6">
         <input
@@ -87,7 +88,7 @@ content %}
 
     <div class="form-group row mb-3">
       <label for="expiry_date" class="col-md-6 col-form-label"
-        ><strong>Expiry Date:</strong></label
+        ><strong>Expiry Date</strong></label
       >
       <div class="col-md-6">
         <input

@@ -5,7 +5,6 @@ Main views of shop-easy app
 import logging
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
-from datetime import datetime
 
 from student.inventory_details import get_inventory_details, \
     get_inventory_product
@@ -35,23 +34,27 @@ def get_inventory():
     except Exception as e:
         logging.exception(e)
 
-@views.route('admin/add-inventory', methods=['POST'])
+@views.route('add-inventory', methods=['GET','POST'])
 @login_required
 def add_inventory():
-    name = request.form.get("name")
-    description = request.form.get("description")
-    quantity = int(request.form.get("quantity"))
-    category = request.form.get("category")
-    weight = int(request.form.get("weight"))
-    expiry_date = datetime.strptime(request.form.get("expiry_date"), '%m-%d-%Y')
-    print(f"Name: {name}, Description: {description}, Quantity: {quantity}, Category: {category}, Weight: {weight}, Expiry Date: {expiry_date}")
-    # Validating the null check of input fields
-    if any(value is None or value == "" for value in (name, description, quantity, category, weight, expiry_date)):
-        flash("One or more form values are missing", category='error')
-        return render_template("login.html", user=current_user)   
+    if request.method == 'POST': 
+        name = request.form.get("name")
+        description = request.form.get("description")
+        quantity = int(request.form.get("quantity"))
+        category = request.form.get("category")
+        weight = int(request.form.get("weight"))
+        print(request.form.get("expiry_date"))
+        expiry_date =request.form.get("expiry_date")
+        print(f"Name: {name}, Description: {description}, Quantity: {quantity}, Category: {category}, Weight: {weight}, Expiry Date: {expiry_date}")
+        # Validating the null check of input fields
+        if any(value is None or value == "" for value in (name, description, quantity, category, weight, expiry_date)):
+            flash("One or more form values are missing", category='error')
+            return render_template("login.html", user=current_user)   
+        else:
+            status = add(name, description, quantity, category, weight, expiry_date)
+            return render_template("admin.html", user=current_user) if status else render_template("add_products.html", user=current_user)
     else:
-        status = add(name, description, quantity, category, weight, expiry_date)
-        return redirect(url_for('views.get_inventory')) if status else render_template("login.html", user=current_user) #Redirect the else part to add_inventory html page 
+        return render_template("add_products.html", user=current_user)
     
 
 @views.route('student/add-to-cart', methods=['POST'])
