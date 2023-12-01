@@ -172,10 +172,13 @@ def get_orders():
 def order():
     try:
         data = request.get_json()
-        place_order(data)  
+        cart_details = data['cartDetails']
+        place_order(cart_details)
+        flash('Order placed successfully')
         return jsonify({'message': 'Order placed successfully'}), 201
     except Exception as e:
         logging.exception(e)
+        flash('Sorry! Order placement Failed')
         return jsonify({'message': 'Sorry! Unexpected error occured while placing the order'}), 500
 
 

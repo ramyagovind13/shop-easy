@@ -15,12 +15,19 @@ def get_ordered_products(order_details):
     for order in order_details:
         products = dict()
         products['order'] = order
-        products['items'] = list()
         product_details = order.inventory
-        for product in product_details:
-            unit = dict()
-            unit['name'] = product.name
-            products['items'].append(unit)
+        order_product_details = OrderInventoryRelation.query.filter_by(
+            order_id=order.order_id).all()
+
+        mapping_dict = {product.sku: product for product in product_details}
+        ordered_products = [
+            {"name": mapping_dict[product_details.sku].name,
+            "quantity": product_details.quantity}
+            for product_details in order_product_details
+            if product_details.sku in mapping_dict
+        ]
+        
+        products['items'] = ordered_products
         orders.append(products)
     return orders
 
