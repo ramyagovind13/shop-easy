@@ -14,7 +14,7 @@ from admin.inventory import add, update, delete
 from admin.order import get_all_orders
 from student.cart import get_cart_details, get_user_inventory_details
 from student.order import get_order_details, get_ordered_products, place_order, cancel_order
-from your_flask_app import mail
+from app import mail
 
 views = Blueprint('views', __name__)
 
