@@ -1,7 +1,6 @@
 '''
 Main views of shop-easy app
 '''
-
 import logging
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
@@ -14,7 +13,7 @@ from admin.inventory import add, update, delete
 from admin.order import get_all_orders
 from student.cart import get_cart_details, get_user_inventory_details
 from student.order import get_order_details, get_ordered_products, place_order, cancel_order
-from app import mail
+from website import mail
 
 views = Blueprint('views', __name__)
 
