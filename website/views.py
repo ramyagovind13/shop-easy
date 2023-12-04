@@ -4,7 +4,7 @@ Main views of shop-easy app
 import logging
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
-from flask_mail import Message
+from flask_mail import Message, mail
 
 from student.inventory_details import get_inventory_details, \
     get_inventory_product
