@@ -13,6 +13,8 @@ from admin.inventory import add, update, delete
 from admin.order import get_all_orders
 from student.cart import get_cart_details, get_user_inventory_details
 from student.order import get_order_details, get_ordered_products, place_order, cancel_order
+from website import mail
+from flask_mail import Message
 
 views = Blueprint('views', __name__)
 
@@ -174,14 +176,26 @@ def order():
     try:
         data = request.get_json()
         cart_details = data['cartDetails']
-        clear_cart(current_user)
+        user_email = current_user.email
+        user_cart = current_user.carts
+        clear_cart(user_cart[0])
         place_order(cart_details)
+        send_order_notification(user_email)
         flash('Order placed successfully')
         return jsonify({'message': 'Order placed successfully'}), 201
     except Exception as e:
         logging.exception(e)
         flash('Sorry! Order placement Failed')
         return jsonify({'message': 'Sorry! Unexpected error occured while placing the order'}), 500
+    
+def send_order_notification(recipient_email):
+    try:
+        subject = 'Order Confirmation'
+        body = f'Thank you for your order!\n\n Your order has been placed successfully !!'
+        message = Message(subject=subject, recipients=[recipient_email], body=body)
+        mail.send(message)
+    except Exception as e:
+        logging.exception(e)
 
 
 @views.route('student/cancel', methods=['PUT'])
