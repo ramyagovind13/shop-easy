@@ -61,9 +61,7 @@ def clear_cart(user_cart):
             cart_details = InvetoryCartRelation.query.filter_by(cart_id=cart_id).all()
             for detail in cart_details:
                 db.session.delete(detail)
-
-
-            db.session.commit()
+                db.session.commit()
             db.session.delete(user_cart)
             db.session.commit()
             return True
