@@ -54,16 +54,17 @@ def get_user_inventory_details(current_user):
     return inventory_details
 
 
-def clear_cart(current_user):
+def clear_cart(user_cart):
     try:
-        user_cart = current_user.carts
-        cart_id = user_cart[0].cart_id
+        cart_id = user_cart.cart_id
         if cart_id:
             cart_details = InvetoryCartRelation.query.filter_by(cart_id=cart_id).all()
             for detail in cart_details:
                 db.session.delete(detail)
 
-            db.session.delete(user_cart[0])
+
+            db.session.commit()
+            db.session.delete(user_cart)
             db.session.commit()
             return True
     except Exception as e:
